@@ -334,6 +334,21 @@ class Sender {
     }
 
     /**
+     * Write a long256 column with its value into the buffer of the sender.
+     *
+     * @param {string} name - Column name.
+     * @param {string} value - Column value, accepts only string values.
+     * @return {Sender} Returns with a reference to this sender.
+     */
+    long256Column(name, value) {
+        writeColumn(this, name, value, () => {
+            checkCapacity(this, [value], 3 + value.length);
+            write(this, `0x${value}i`);
+        }, "string");
+        return this;
+    }
+
+    /**
      * Write a timestamp column with its value into the buffer of the sender.
      *
      * @param {string} name - Column name.
